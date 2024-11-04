@@ -214,7 +214,7 @@ public class No11Tests {
 		String val = bst.remove(30);
 
 		assertEquals("Incorrect value returned", "D", val);
-		assertEquals("Incorrect size", 6, bst.size());
+ nhjn b         		assertEquals("Incorrect size", 6, bst.size());
 
 		checkTreeStructure(bst.root);
 		checkTreeValuesInOrder(bst.root, "ABCEFG");

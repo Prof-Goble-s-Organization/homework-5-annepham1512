@@ -91,7 +91,20 @@ public class COMP232ArrayHeap<K extends Comparable<K>, V> implements COMP232Prio
          * node up the tree.
 	 * I recommend creating a helper function to assist with the percolation.
          */
-        throw new UnsupportedOperationException("Not yet implemented");
+        tree.add(new HeapNode<>(key, value));
+        perculateUp(tree.size() - 1);
+    }
+
+    // Helper method
+    private void perculateUp(int index) {
+        int parentIndex = getParentIndex(index);
+
+        while (index > 0 && tree.get(index).key.compareTo(tree.get(parentIndex).key) < 0) {
+            swap(index, parentIndex);
+
+            index = parentIndex;
+            parentIndex = getParentIndex(index);
+        }
     }
 
     /**
@@ -206,7 +219,35 @@ public class COMP232ArrayHeap<K extends Comparable<K>, V> implements COMP232Prio
      */
     public void adjustPriority(V value, K newKey) {
         // Intentionally not implemented -- see homework assignment
-        throw new UnsupportedOperationException("Not yet implemented.");
+        if (tree.size() == 0) {
+            throw new IllegalStateException("Heap is empty");
+        // Find the node with the specified value
+        int index = -1;
+        for (int i = 0; i < tree.size(); i++) {
+            if (tree.get(i).value.equals(value)) {
+                index = i;
+                break;
+            }
+        }
+        // If the value is not found in the heap, do nothing
+        if (index == -1) {
+            return;
+        }
+
+        // Update the key of the found node
+        K oldKey = tree.get(index).key;
+        tree.get(index).key = newKey;
+
+        // Restore the heap property by percolating up or trickling down
+        if (newKey.compareTo(oldKey) < 0) {
+            // If the new key is smaller, percolate up
+            perculateUp(index);
+        } else if (newKey.compareTo(oldKey) > 0) {
+            // If the key is larger, trickle donw
+            trickleDown(index);
+        }
+        }
+        }
 
         /*
          * Find the node with the value -- Hint: Just search through the array!
